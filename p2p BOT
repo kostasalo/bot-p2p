@@ -1,0 +1,36 @@
+import requests
+
+def get_binance_usdt_price():
+    api_url = "https://api.binance.com/api/v3/ticker/price"
+    params = {"symbol": "USDTUSDT"}  # Пара USDT/USDT для получения актуального курса 1 USDT в USDT
+
+    try:
+        response = requests.get(api_url, params=params)
+        response_json = response.json()
+        price_usdt = float(response_json["price"])
+        return price_usdt
+    except Exception as e:
+        print("Ошибка при получении курса USDT с Binance:", e)
+        return None
+
+def main():
+    # Ваш код для получения токена Telegram и настройки связи с API Telegram
+    # Ваш код для получения ключей API Binance и настройки связи с API Binance
+
+    while True:
+        # Получаем курс USDT
+        usdt_price = get_binance_usdt_price()
+
+        if usdt_price is not None:
+            amount_to_buy = 1000  # Сумма в долларах, которую вы хотите купить
+            amount_in_usdt = amount_to_buy / usdt_price
+
+            # Отправляем сообщение в Telegram с информацией о курсе
+            message = f"Самый выгодный курс USDT на Binance: {usdt_price} USDT за 1 USDT. Вы можете купить {amount_in_usdt:.2f} USDT за {amount_to_buy:.2f} долларов."
+            # Ваш код для отправки сообщения через API Telegram
+
+        # Подождать 6 часов перед следующей итерацией
+        time.sleep(6 * 60 * 60)
+
+if __name__ == "__main__":
+    main()
